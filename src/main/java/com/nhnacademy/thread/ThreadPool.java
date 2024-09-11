@@ -60,23 +60,22 @@ public class ThreadPool {
     }
 
     private void createThread(){
-        for(int i=0; i<poolSize; i++){
-            threadList.add(new Thread(runnable));
-        }
+         /*TODO#8-1-6 thread 생성
+          - thread가 생성되는 과정은 동기화 되어야 합니다.
+          - mutex, semaphore, synchronized 등등.. 적절히 구현 합니다.
+        */
+
     }
 
     public synchronized void start(){
-        /*TODO#8-1-6 thread를생성 -> threadList에 등록 합니다. -> 생성된 thread를 시작 합니다.
-            - thread가 생성되는 과정은 동기화 되어야 합니다.
-            - mutex, semaphore, synchronized 등등.. 적절히 구현 합니다.
-        * */
+        //TODO#8-1-7 생성된 thread를 시작 합니다.
         for(int i=0; i<poolSize; i++){
             //구현
         }
     }
 
     public synchronized void stop(){
-        /*TODO#8-1-7 interrupt()를 실행해서 thread를 종료 합니다.
+        /*TODO#8-1-8 interrupt()를 실행해서 thread를 종료 합니다.
             - thread가 종료되는 과정에서 동기화 되어야 합니다.
             - 우선 모든 thread interrupt 호출
          */
@@ -85,9 +84,9 @@ public class ThreadPool {
             //구현
         }
 
-        //TODO#8-1-8 join()를 이용해서 모든 thread가 종료될 떄 까지 대기 상태로 만듭니다.
+        //TODO#8-1-9 join()를 이용해서 모든 thread가 종료될 떄 까지 대기 상태로 만듭니다.
         for(Thread thread : threadList){
-            //궈현
+            //구현
         }
     }
 }
