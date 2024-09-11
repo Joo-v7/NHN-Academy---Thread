@@ -64,20 +64,17 @@ public class ThreadPool {
     }
 
     private void createThread(){
-        for(int i=0; i<poolSize; i++){
-            threadList.add(new Thread(runnable));
+        synchronized (this) {
+            for (int i = 0; i < poolSize; i++) {
+                threadList.add(new Thread(runnable));
+            }
         }
     }
 
     public synchronized void start(){
-        /*thread를생성 -> threadList에 등록 합니다. -> 생성된 thread를 시작 합니다.
-            - thread가 생성되는 과정은 동기화 되어야 합니다.
-            - mutex, semaphore, synchronized 등등.. 적절히 구현 합니다.
-        * */
-
+        /*생성된 thread를 시작 합니다.*/
         for(int i=0; i<poolSize; i++){
-            Thread thread = new Thread(runnable);
-            threadList.add(thread);
+            Thread thread = threadList.get(i);
             thread.start();
         }
     }
