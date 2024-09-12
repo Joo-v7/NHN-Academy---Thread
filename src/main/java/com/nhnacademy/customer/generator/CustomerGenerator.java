@@ -19,6 +19,7 @@ import com.nhnacademy.nhnmart.entring.EnteringQueue;
 import lombok.extern.slf4j.Slf4j;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicLong;
+import com.devskiller.jfairy.*;
 
 /**
  * 회원생성 후 대기열에 등록 합니다.
@@ -37,11 +38,14 @@ public class CustomerGenerator implements Runnable {
 
     public CustomerGenerator(EnteringQueue enteringQueue) {
         //TODO#4-1 enteringQueue null 이면 'IllegalArgumentException' 발생하는지 검증 합니다.
+        if (enteringQueue == null) {
+            throw new IllegalArgumentException();
+        }
 
 
         //TODO#4-2 enteringQueue, atomicId 를 0으로 초기화 합니다.
-        this.enteringQueue = null;
-        atomicId=null;
+        this.enteringQueue = enteringQueue;
+        atomicId = new AtomicLong(0);
 
     }
 
@@ -52,8 +56,12 @@ public class CustomerGenerator implements Runnable {
             - while 조건을 수정하세요.
             - 1초 간격으로 회원을 entringQueue의 대기열에 등록 합니다.
         */
-        while (true){
+        while (enteringQueue.getQueueSize() < 100){
             //1초 간격으로 회원을 entringQueue의 대기열에 등록 합니다.
+            try {
+                Thread.currentThread().sleep(1000);
+            }catch(InterruptedException e){}
+            this.enteringQueue.addCustomer(generate());
         }
     }
 
@@ -64,8 +72,9 @@ public class CustomerGenerator implements Runnable {
             - 회원이름은 random으로 생성 됩니다.
                - 회원이름 생성시 https://github.com/Devskiller/jfairy 이용해서 구현 합니다.
          */
-
-        Customer customer = null;
+        Fairy fairy = Fairy.create();
+        Person person = fairy.person();
+        Customer customer = new Customer(atomicId.incrementAndGet(), person.getFullName(), DEFAULT_MONEY);
         return customer;
     }
 }

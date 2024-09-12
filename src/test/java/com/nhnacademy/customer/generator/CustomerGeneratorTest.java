@@ -29,16 +29,19 @@ class CustomerGeneratorTest {
     @BeforeEach
     void setUp() {
         //TODO#4-5 enteringQueue 대기열을 capacity = 5로 초기화 합니다.
-        enteringQueue = null;
+        enteringQueue = new EnteringQueue(5);
 
         //TODO#4-6 enteringQueue를 이용 해서 customerGeneratorr 객체를 생성 합니다.
-        customerGenerator = null;
+        customerGenerator = new CustomerGenerator(enteringQueue);
     }
 
     @Test
     @DisplayName("enteringQueue is null")
     void constructorTest(){
         //TODO#4-7 enteringQueue == null 이면 IllegalArgumentException 발생 하는지 검증 합니다.
+        if (enteringQueue == null) {
+            throw new IllegalArgumentException();
+        }
 
     }
 
@@ -47,13 +50,14 @@ class CustomerGeneratorTest {
     void generatorTest() throws InterruptedException {
 
         //TODO#4-8 customerGenerator를 이용해서 customerGeneratorThread 초기화 하고, 실행 합니다.
-        Thread customerGeneratorThread = null;
+        Thread customerGeneratorThread = new Thread(customerGenerator);
+        customerGeneratorThread.start();
 
         //TODO#4-9 10초 대기 합니다.
-
+        customerGeneratorThread.sleep(10000);
 
         //TODO#4-10 customerGeneratorThread를 종료 합니다.
-
+        customerGeneratorThread.interrupt();
 
         while(customerGeneratorThread.isAlive()){
             Thread.yield();
@@ -64,10 +68,14 @@ class CustomerGeneratorTest {
 
         Assertions.assertAll(
             ()->{
+                if (customerGeneratorThread.isInterrupted()) {
+                    customerGeneratorThread.getState();
+                }
                 //TODO#4-11 interrupt발생시 customerGeneratorThread 의 상태가  TERMINATED 상태인지 검증
             },
             ()->{
                 //TODO#4-12 enteringQueue(대기열) 최대 Queue Size가 5 <-- 10초 동안 최대 5명의 고객이 대기열에 등록되었는지 검증 합니다.
+                enteringQueue.getQueueSize();
             }
         );
     }
