@@ -22,12 +22,13 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.lang3.StringUtils;
 
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 @Slf4j
 public class CsvProductParser implements ProductParser {
@@ -38,12 +39,12 @@ public class CsvProductParser implements ProductParser {
 
     public CsvProductParser() {
         //TODO#6-2-1 기본생성자 구현 , getProductsStream()을 이용해서 inputStream을 초기화 합니다.
-        inputStream = null;
+        inputStream = getProductsStream(); // csv 파일의 inputstream임.
     }
 
     public CsvProductParser(InputStream inputStream){
         //TODO#6-2-2 inputStream prameter로 전달 됩니다. 초기화 합니다.
-        this.inputStream = null;
+        this.inputStream = inputStream;
     }
 
     @Override
@@ -53,7 +54,10 @@ public class CsvProductParser implements ProductParser {
             - https://github.com/nhnacademy-bootcamp/java-dev-settings/blob/main/docs/06.maven/02.Maven/06.pom.xml.adoc 참고 합니다.
             - ProductParser interface의 getProductsStream()를 이용해서 구현 합니다.
          */
+        // product: id, item, maker, specification, unit, price, quantity
+        new InputStreamReader(inputStream, UTF_8);
         List<Product> products = new ArrayList<>();
+
 
 
         return products;

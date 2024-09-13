@@ -24,7 +24,7 @@ import java.util.List;
      - /src/main/resources/product_data.csv 파일을 파싱 합니다.
 */
 public interface ProductParser extends Closeable {
-    String PRODUCTS_DATA= "product_data.csv";
+    String PRODUCTS_DATA = "product_data.csv";
     List<Product> parse();
     default InputStream getProductsStream(){
         return this.getClass()

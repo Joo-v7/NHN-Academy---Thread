@@ -44,71 +44,79 @@ public class Product {
 
     public Product(long id, String item, String maker, String specification, String unit, int price, int quantity) {
         //TODO#6-1-1 product 생성자의 parameter 검증을 통과하지 못한다면 IllegalArgumentException이 발생 됩니다.
-
+        if (id < 0 || item == null || maker == null || specification == null || unit == null || price < 0 || quantity < 0) {
+            throw new IllegalArgumentException();
+        }
 
         //TODO#6-1-2 product attribute를 초기화 합니다.
-        this.id = 0;
-        this.item = null;
-        this.maker = null;
-        this.specification = null;
-        this.unit = null;
-        this.price = 0;
-        this.quantity = 0;
+        this.id = id;
+        this.item = item;
+        this.maker = maker;
+        this.specification = specification;
+        this.unit = unit;
+        this.price = price;
+        this.quantity = quantity;
     }
 
     public long getId() {
         //TODO#6-1-3 product id 반환
-        return 0l;
+        return this.id;
     }
 
     public String getItem() {
         //TODO#6-1-4 item 반환
-        return null;
+        return this.item;
     }
 
     public String getMaker() {
         //TODO#6-1-5 maker 반환
-        return null;
+        return this.maker;
     }
 
     public String getSpecification() {
         //TODO#6-1-6 specification 반환
-        return null;
+        return this.specification;
     }
 
     public String getUnit() {
         //TODO#6-1-7 unit 반환
-        return null;
+        return this.unit;
     }
 
     public int getPrice() {
         //TODO#6-1-8 price 반환
-        return 0;
+        return this.price;
     }
 
     public int getQuantity() {
         //TODO#6-1-9 quantity 반환
-        return 0;
+        return this.quantity;
     }
 
     public void setQuantity(int quantity) {
         //TODO#6-1-10 qunatity 수정, quantity < 0 이면 IllegalArgumentException 발생
-
-
-        this.quantity = quantity;
+        if (quantity < 0) {
+            throw new IllegalArgumentException();
+        }
+        else {
+            this.quantity = quantity;
+        }
     }
 
     //TODO#6-1-11 equals를 구현 합니다.
+    // 코드가 너무 더러운데 이게 맞나?
     @Override
     public boolean equals(Object o) {
-
-        return false;
+        Product p = (Product)o;
+        return (this.getId() == p.getId() && this.getItem() == p.getItem() && this.getMaker() == p.getMaker()
+        && this.getSpecification() == p.getSpecification() && this.getUnit() == p.getUnit() && this.getPrice() == p.getPrice()
+                && this.getQuantity() == p.getQuantity());
     }
 
     //TODO#6-1-12 hashCode를 구현합니다.
     @Override
     public int hashCode() {
-        return 0;
+        return Objects.hash(id, item, maker, specification, unit, price, quantity);
     }
 
     @Override
