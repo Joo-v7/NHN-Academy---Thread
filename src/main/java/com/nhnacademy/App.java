@@ -55,10 +55,10 @@ public class App
         */
 
         //TODO#10-1 checkout 대기열의 queueSize : 20으로 설정 합니다.
-        RequestChannel checkoutChannel = null;
+        RequestChannel checkoutChannel = new RequestChannel(20);
 
         //TODO#10-2 shoppingThreadPool, poolSize=10 생성후 실행 합니다.
-        Runnable customerRunnable = null;
+        Runnable customerRunnable = new Runnable() {};
         ThreadPool shoppingThreadPool = null;
 
         //TODO#10-3 checkout을 하기위한 threadPool을 생성 합니다. poolSize =3 , 즉 동시에 3군대서 계산을 진행할 수 있습니다.
