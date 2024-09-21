@@ -44,7 +44,8 @@ public class Product {
 
     public Product(long id, String item, String maker, String specification, String unit, int price, int quantity) {
         //TODO#6-1-1 product 생성자의 parameter 검증을 통과하지 못한다면 IllegalArgumentException이 발생 됩니다.
-        if (id < 0 || item == null || maker == null || specification == null || unit == null || price < 0 || quantity < 0) {
+        if ( id<0 || StringUtils.isEmpty(item) || StringUtils.isEmpty(maker) || StringUtils.isEmpty(specification)
+                || StringUtils.isEmpty(unit) || price < 0 || quantity < 0) {
             throw new IllegalArgumentException();
         }
 
@@ -98,19 +99,18 @@ public class Product {
         if (quantity < 0) {
             throw new IllegalArgumentException();
         }
-        else {
             this.quantity = quantity;
-        }
     }
 
     //TODO#6-1-11 equals를 구현 합니다.
     // 코드가 너무 더러운데 이게 맞나?
     @Override
     public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
         Product p = (Product)o;
-        return (this.getId() == p.getId() && this.getItem() == p.getItem() && this.getMaker() == p.getMaker()
-        && this.getSpecification() == p.getSpecification() && this.getUnit() == p.getUnit() && this.getPrice() == p.getPrice()
-                && this.getQuantity() == p.getQuantity());
+        return this.id == p.id && Objects.equals(this.item, p.item) && Objects.equals(this.maker, p.maker) && Objects.equals(this.specification, p.specification)
+                && Objects.equals(this.unit, p.unit) && this.price == p.price && this.quantity == p.quantity;
     }
 
     //TODO#6-1-12 hashCode를 구현합니다.

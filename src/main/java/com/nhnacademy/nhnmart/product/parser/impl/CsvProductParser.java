@@ -28,8 +28,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
-
 @Slf4j
 public class CsvProductParser implements ProductParser {
 
@@ -40,11 +38,17 @@ public class CsvProductParser implements ProductParser {
     public CsvProductParser() {
         //TODO#6-2-1 기본생성자 구현 , getProductsStream()을 이용해서 inputStream을 초기화 합니다.
         inputStream = getProductsStream(); // csv 파일의 inputstream임.
+        if (Objects.isNull(inputStream)) {
+            throw new IllegalArgumentException();
+        }
     }
 
     public CsvProductParser(InputStream inputStream){
         //TODO#6-2-2 inputStream prameter로 전달 됩니다. 초기화 합니다.
-        this.inputStream = inputStream;
+        if (Objects.isNull(inputStream)) {
+            throw new IllegalArgumentException("Input stream cannot be null");
+        }
+            this.inputStream = inputStream;
     }
 
     @Override
@@ -55,17 +59,51 @@ public class CsvProductParser implements ProductParser {
             - ProductParser interface의 getProductsStream()를 이용해서 구현 합니다.
          */
         // product: id, item, maker, specification, unit, price, quantity
-        new InputStreamReader(inputStream, UTF_8);
+
         List<Product> products = new ArrayList<>();
 
+        try {
+            CSVParser parser = CSVParser.parse(inputStream, StandardCharsets.UTF_8, CSVFormat.DEFAULT);
+            List<CSVRecord> csvRecords = parser.getRecords();
+            for(int i = 1; i < csvRecords.size(); i++){
+                CSVRecord csvRecord = csvRecords.get(i);
+                String item = csvRecord.get(0);
+                String maker = csvRecord.get(1);
+                String specification = csvRecord.get(2);
+                String unit = csvRecord.get(3);
+                int price = 0;
+                String tempPrice = csvRecord.get(4);
+                tempPrice = tempPrice.replaceAll(",", "");
+                if (!StringUtils.isEmpty(tempPrice) && StringUtils.isNumeric(tempPrice)) {
+                    price = Integer.parseInt(tempPrice);
+                }
 
+                long id = ProductIdGenerator.getNewId();
 
+                Product p = new Product (
+                    id,
+                    item,
+                    maker,
+                    specification,
+                    unit,
+                    price,
+                    DEFAULT_QUANTITY
+                );
+                products.add(p);
+            }
+
+        }catch(Exception e){
+            throw new CsvParsingException();
+        }
         return products;
     }
+
 
     @Override
     public void close() throws IOException {
         //TODO#6-2-5 inputStream 객체가 존재하면 close() method를 호출해서 자원을 해지 합니다.
-        
+        if (Objects.nonNull(inputStream)) {
+            inputStream.close();
+        }
     }
 }
