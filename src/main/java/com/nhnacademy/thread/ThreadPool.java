@@ -35,9 +35,7 @@ public class ThreadPool {
 
     public ThreadPool(Runnable runnable){
         //TODO#8-1-1 default 생성자 구현, poolSize = DEFAULT_POOL_SIZE를 사용합니다.
-        this.poolSize= DEFAULT_POOL_SIZE;
-        this.runnable = runnable;
-        this.threadList = new ArrayList<>(poolSize);
+        this(DEFAULT_POOL_SIZE, runnable);
     }
 
     public ThreadPool(int poolSize, Runnable runnable) {
@@ -72,8 +70,7 @@ public class ThreadPool {
         */
         synchronized (this){
             for (int i = 0; i < poolSize; i++) {
-                Thread thread = new Thread(runnable);
-                threadList.add(thread);
+                threadList.add(new Thread(runnable));
             }
         }
     }
@@ -103,13 +100,9 @@ public class ThreadPool {
         //TODO#8-1-9 join()를 이용해서 모든 thread가 종료될 떄 까지 대기 상태로 만듭니다.
         for(Thread thread : threadList){
             //구현
-            if (Objects.nonNull(thread) && thread.isAlive()) {
-                try {
-                    thread.join();
-                }catch (InterruptedException e){
-                    Thread.currentThread().interrupt();
-                }
-            }
+            try {
+                thread.join();
+            }catch (InterruptedException e){}
         }
     }
 }
