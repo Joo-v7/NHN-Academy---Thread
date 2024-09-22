@@ -91,5 +91,5 @@ public class Customer {
         return Objects.hash(this.id, this.name, this.money);
 
     }
-
 }
+// Joo
