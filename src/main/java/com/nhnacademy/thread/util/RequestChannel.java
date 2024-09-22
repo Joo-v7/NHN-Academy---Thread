@@ -26,7 +26,6 @@ public class RequestChannel {
 
     public RequestChannel(){
         //TODO#8-2-1 기본생성자 - DEFAULT_QUEUE_SIZE 기반으로 QUEUE를 생성 합니다.
-
         this(DEFAULT_QUEUE_SIZE);
     }
 
@@ -66,5 +65,4 @@ public class RequestChannel {
         notifyAll();
         return requestQueue.poll();
     }
-
 }

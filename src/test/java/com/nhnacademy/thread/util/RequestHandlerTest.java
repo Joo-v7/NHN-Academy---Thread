@@ -54,7 +54,7 @@ class RequestHandlerTest {
             for(int i=1; i<=5; i++){
                 //구현
                 try {
-                    Thread.sleep(5000);
+                    Thread.sleep(1000);
                     requestChannel.addRequest(countExecutable);
                 }catch (InterruptedException e){
                     throw new RuntimeException(e);

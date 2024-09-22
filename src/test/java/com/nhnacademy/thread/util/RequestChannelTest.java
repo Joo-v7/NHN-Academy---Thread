@@ -21,6 +21,7 @@ import org.junit.platform.commons.function.Try;
 import org.junit.platform.commons.util.ReflectionUtils;
 
 import java.util.Queue;
+import java.util.concurrent.CountDownLatch;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -61,6 +62,7 @@ class RequestChannelTest {
 
         Assertions.assertEquals(5,queue.size());
     }
+
     @Test
     @DisplayName("addRequest : 11 times, waiting")
     void addRequest_11tiems() throws Exception {
@@ -78,15 +80,20 @@ class RequestChannelTest {
 
         thread.start();
 
+        Thread.sleep(5000);
+
         Try<Object> readFieldValue = ReflectionUtils.tryToReadFieldValue(RequestChannel.class, "requestQueue", requestChannel);
         Queue queue = (Queue) readFieldValue.get();
 
         //requestChannel의 queueSize =10, 11번재 executable 객체를 추가할 수 없어 대기 함니다.
-        log.debug("queueSize:{}",queue.size());
-        Assertions.assertEquals(10,queue.size());
+        log.debug("Hello queueSize:{}",queue.size());
+        Assertions.assertEquals(10,queue.size()); // queue size가 자꾸 0이 나옴.
+        // 이 부분이 자꾸 오류남, main thread가 thread-16의 add 작업을 끝나기 전에 queueSize 비교를 시작함.
 
         thread.interrupt();
     }
+
+
 
     @Test
     @DisplayName("getRequest, from queue(size:5)")
@@ -128,5 +135,4 @@ class RequestChannelTest {
 
         thread.interrupt();
     }
-
 }

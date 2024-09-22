@@ -102,7 +102,9 @@ public class ThreadPool {
             //구현
             try {
                 thread.join();
-            }catch (InterruptedException e){}
+            }catch (InterruptedException e){
+                Thread.currentThread().interrupt();
+            }
         }
     }
 }
