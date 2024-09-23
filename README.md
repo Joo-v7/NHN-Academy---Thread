@@ -18,3 +18,4 @@ wait(), notify(), notifyAll() 메서드를 사용하여 스레드 간 통신을 
 BlockingQueue와 같은 스레드 안전한 데이터 구조를 사용하여 스레드 간 데이터를 교환하는 방법을 이해한다.
 
 위 내용들을 1 ~ 10의 exercise로 실습을 진행함.
+(branch 확인)
