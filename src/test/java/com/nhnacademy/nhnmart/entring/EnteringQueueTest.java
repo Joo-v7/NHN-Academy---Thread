@@ -48,7 +48,9 @@ class EnteringQueueTest {
     void addCustomer() throws Exception {
         //TODO#3-10 id=100인 고객을 enteringQueue에 등록하고 검증 합니다.
         Customer customer = new Customer(100l, "NHN아카데미100",100_0000);
-        Assertions.assert
+        enteringQueue.addCustomer(customer);
+        int actual = enteringQueue.getQueueSize();
+        Assertions.assertEquals(100l, actual);
 
     }
 
