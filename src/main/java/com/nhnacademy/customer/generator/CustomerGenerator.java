@@ -31,7 +31,7 @@ public class CustomerGenerator implements Runnable {
     private final EnteringQueue enteringQueue;
 
     //회원 번호 Id 생성
-    private final AtomicLong atomicId;
+    private final AtomicLong atomicId; // atomicId는 thread safe 하게 count(+1)해줌.
 
     //회원이 보유한 default money
     private final static int DEFAULT_MONEY=10_00000;
